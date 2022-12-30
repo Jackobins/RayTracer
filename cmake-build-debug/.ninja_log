@@ -1,0 +1,25 @@
+# ninja log v5
+18	121	6940951788802363	CMakeFiles/RayTracer.dir/CanvasFiles/colorOps.cpp.obj	506a82ff3cba4bc0
+36	138	6940951788992036	CMakeFiles/RayTracer.dir/CanvasFiles/color.cpp.obj	1773e39f608a09bf
+1	212	6940951789726117	CMakeFiles/RayTracer.dir/CoordFiles/point.cpp.obj	b9a51bf108b75afe
+122	233	6940951789957369	CMakeFiles/RayTracer.dir/SceneFiles/RayFiles/intersection.cpp.obj	132221ebc10e3965
+26	340	6940951791020563	CMakeFiles/RayTracer.dir/CoordFiles/vec.cpp.obj	e5035ab01eb530e5
+76	477	6940951792391714	CMakeFiles/RayTracer.dir/SceneFiles/Shapes/sphere.cpp.obj	e7aeb7e03a87b76a
+83	515	6940951792766695	CMakeFiles/RayTracer.dir/SceneFiles/RayFiles/ray.cpp.obj	fd08cc1b863a4d87
+14	544	6940951793062964	CMakeFiles/RayTracer.dir/CoordFiles/coordOps.cpp.obj	13d33ec66cad1166
+66	751	6940951795131858	CMakeFiles/RayTracer.dir/CanvasFiles/canvas.cpp.obj	81bf4db6e3e602cd
+56	783	6940951795457150	CMakeFiles/RayTracer.dir/CoordFiles/matrixOps.cpp.obj	498a185d542d4b52
+94	831	6940951795934818	CMakeFiles/RayTracer.dir/SceneFiles/RayFiles/rayOps.cpp.obj	cc8aa9e5bd247fdd
+46	846	6940951796087639	CMakeFiles/RayTracer.dir/CoordFiles/matrix.cpp.obj	7ab614f4045ef0c
+10	875	6940951796368167	CMakeFiles/RayTracer.dir/main.cpp.obj	2b6616afdaaa5413
+875	1093	6940951798515795	RayTracer.exe	2264ae1bf4edd022
+22	727	6941404026778938	CMakeFiles/RayTracer.dir/SceneFiles/RayFiles/rayOps.cpp.obj	cc8aa9e5bd247fdd
+5	737	6941404026871545	CMakeFiles/RayTracer.dir/main.cpp.obj	2b6616afdaaa5413
+737	990	6941404029359721	RayTracer.exe	2264ae1bf4edd022
+5	676	6941404100742823	CMakeFiles/RayTracer.dir/main.cpp.obj	2b6616afdaaa5413
+677	889	6941404102815844	RayTracer.exe	2264ae1bf4edd022
+4	706	6941404602973908	CMakeFiles/RayTracer.dir/main.cpp.obj	2b6616afdaaa5413
+707	929	6941404605157339	RayTracer.exe	2264ae1bf4edd022
+10	686	6941406137119007	CMakeFiles/RayTracer.dir/SceneFiles/RayFiles/rayOps.cpp.obj	cc8aa9e5bd247fdd
+4	692	6941406137186670	CMakeFiles/RayTracer.dir/main.cpp.obj	2b6616afdaaa5413
+692	918	6941406139400344	RayTracer.exe	2264ae1bf4edd022
