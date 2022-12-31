@@ -24,8 +24,13 @@ int main() {
     float half = wallSize / 2;
     canvas c = canvas(canvasPixels, canvasPixels);
     color red = color(1, 0, 0);
-    sphere s = sphere(1, matrix(4, 4, 1));
+    sphere s = sphere(1, matrix(4, 4, 1), material());
+    s.surfaceMaterial.surfaceColor = color(0.3, 1, 0.1);
     matrix inverseTransform = s.transform.inverse();
+
+    point lightPosition = point(-10, 10, -10);
+    color lightColor = color(1,1,1);
+    pointLight light = pointLight(lightPosition, lightColor);
 
     for (int i = 0; i < canvasPixels; i++) {
         float worldY = half - (pixelSize * i);
@@ -37,13 +42,17 @@ int main() {
             ray r = ray(rayOrigin, direction);
             vector<intersection> xs = rayOps::intersect(s, r, inverseTransform);
 
-            if (!rayOps::hit(xs).empty()) {
-                c.writePixel(i, j, red);
+            vector<intersection> hits = rayOps::hit(xs);
+            if (!hits.empty()) {
+                point point = r.position(hits[0].t);
+                vec normal = s.normalAt(point, inverseTransform);
+                vec eye = r.direction.negate();
+                c.writePixel(i, j,
+                             rayOps::lighting(s.surfaceMaterial, light,
+                                              point, eye, normal));
             }
         }
     }
-
-    cout << "changed" << endl;
 
     // Write data to file
     ofstream outdata;

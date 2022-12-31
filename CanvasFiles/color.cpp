@@ -11,8 +11,5 @@ color::color(float red, float green, float blue) {
 }
 
 color color::scalarMultiply(float scalar) {
-    r *= scalar;
-    g *= scalar;
-    b *= scalar;
-    return *this;
+    return color(r * scalar, g * scalar, b * scalar);
 }

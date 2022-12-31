@@ -31,6 +31,7 @@ string canvas::toPPM() {
     for (int i = 0; i < frame.size(); i++) {
         size_t rowLength = 0;
         for (int j = 0; j < frame[0].size(); j++) {
+            if (frame[i][j].r > 1) frame[i][j].r = 1;
             string redString = to_string((int)(frame[i][j].r * 255));
             if (rowLength + redString.length() + 1 > 70) {
                 output.append("\n");
@@ -44,6 +45,7 @@ string canvas::toPPM() {
             output.append(redString);
             rowLength += redString.length();
 
+            if (frame[i][j].g > 1) frame[i][j].g = 1;
             string greenString = to_string((int)(frame[i][j].g * 255));
             if (rowLength + greenString.length() + 1 > 70) {
                 output.append("\n");
@@ -57,6 +59,7 @@ string canvas::toPPM() {
             output.append(greenString);
             rowLength += greenString.length();
 
+            if (frame[i][j].b > 1) frame[i][j].b = 1;
             string blueString = to_string((int)(frame[i][j].b * 255));
             if (rowLength + blueString.length() + 1 > 70) {
                 output.append("\n");

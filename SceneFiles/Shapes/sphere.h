@@ -10,15 +10,17 @@
 #include "shape.h"
 #include "../../CoordFiles/matrix.h"
 #include "../../CoordFiles/vec.h"
+#include "material.h"
 
 class sphere : public shape {
 public:
     int id;
     matrix transform;
+    material surfaceMaterial;
 
     explicit sphere(int id);
-    sphere(int id, matrix transform);
-    vec normalAt(point point);
+    sphere(int id, matrix transform, material material);
+    vec normalAt(point point, matrix inverseTransform);
 };
 
 

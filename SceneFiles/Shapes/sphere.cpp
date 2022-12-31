@@ -7,19 +7,22 @@
 #include "../../CoordFiles/coordOps.h"
 
 sphere::sphere(int i) :
-transform(matrix(4, 4, 1)) {
+transform(matrix(4, 4, 1)),
+surfaceMaterial(material(color(1,1,1),
+                         0.1,0.9,0.9,200)) {
     id = i;
 }
 
-sphere::sphere(int i, matrix m) : transform(m) {
+sphere::sphere(int i, matrix m, material mat) : transform(m), surfaceMaterial(mat) {
     id = i;
+    transform = m;
 }
 
-vec sphere::normalAt(point worldPoint) {
-    matrix inverseTransform = transform.inverse();
+vec sphere::normalAt(point worldPoint, matrix inverseTransform) {
     point objectPoint = coordOps::coordToPoint(
             matrixOps::multiply(inverseTransform, worldPoint));
-    vec objectNormal = coordOps::coordToVec(objectPoint);
+    vec objectNormal = coordOps::coordToVec(
+            coordOps::subtract(objectPoint, point(0,0,0)));
     matrix transposeInverse = inverseTransform.transpose();
     vec worldNormal = coordOps::coordToVec(
             matrixOps::multiply(transposeInverse, objectNormal));

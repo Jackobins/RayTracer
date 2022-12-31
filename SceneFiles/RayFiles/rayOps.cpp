@@ -4,6 +4,7 @@
 
 #include "rayOps.h"
 #include "../../CoordFiles/coordOps.h"
+#include "../../CanvasFiles/colorOps.h"
 #include <cmath>
 #include <iostream>
 
@@ -41,4 +42,40 @@ vector<intersection> rayOps::hit(vector<intersection> intersections) {
         output.push_back(min);
     }
     return output;
+}
+
+vec rayOps::reflect(vec in, vec normal) {
+    float normalScalar = 2 * coordOps::dot(in, normal);
+    vec newNormal = normal.scalarMultiply(normalScalar);
+    return coordOps::coordToVec(coordOps::subtract(in, newNormal));
+}
+
+color rayOps::lighting(material material, pointLight light, point point, vec eyeVec, vec normalVec) {
+    color effectiveColor = colorOps::multiply(material.surfaceColor, light.intensity);
+    vec lightVec = vec(light.position.x - point.x,
+                       light.position.y - point.y,
+                       light.position.z - point.z).normalize();
+    color ambientColor = effectiveColor.scalarMultiply(material.ambient);
+    float lightDotNormal = coordOps::dot(lightVec, normalVec);
+
+    color diffuseColor = color(0,0,0);
+    color specularColor = color(0,0,0);
+
+    if (lightDotNormal < 0) {
+        diffuseColor = color(0,0,0);
+        specularColor = color(0,0,0);
+    } else {
+        diffuseColor = effectiveColor.scalarMultiply(material.diffuse * lightDotNormal);
+        vec reflectVec = reflect(lightVec.negate(), normalVec);
+        float reflectDotEye = coordOps::dot(reflectVec, eyeVec);
+
+        if (reflectDotEye <= 0) {
+            specularColor = color(0,0,0);
+        } else {
+            float factor = pow(reflectDotEye, material.shininess);
+            specularColor = (light.intensity).scalarMultiply(material.specular * factor);
+        }
+    }
+
+    return colorOps::add(ambientColor, colorOps::add(diffuseColor, specularColor));
 }

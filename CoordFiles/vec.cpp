@@ -22,7 +22,7 @@ vec::vec(float xcoord, float ycoord, float zcoord, float wcoord) : coord() {
 vec vec::negate() {
     vec vec2 = vec(x * -1, y * -1, z* -1);
     if (w != 0) {
-        vec2.w *= -1;
+        vec2.w = -1 * w;
     }
     return vec2;
 }
@@ -42,6 +42,6 @@ vec vec::scalarMultiply(float scalar) {
 }
 
 vec vec::normalize() {
-    scalarMultiply(1/magnitude());
-    return *this;
+    vec vec2 = scalarMultiply(1/magnitude());
+    return vec2;
 }
