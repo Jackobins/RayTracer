@@ -9,6 +9,7 @@
 #include "../../CoordFiles/point.h"
 #include "shape.h"
 #include "../../CoordFiles/matrix.h"
+#include "../../CoordFiles/vec.h"
 
 class sphere : public shape {
 public:
@@ -17,6 +18,7 @@ public:
 
     explicit sphere(int id);
     sphere(int id, matrix transform);
+    vec normalAt(point point);
 };
 
 
