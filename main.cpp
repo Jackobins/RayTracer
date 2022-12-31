@@ -43,6 +43,8 @@ int main() {
         }
     }
 
+    cout << "changed" << endl;
+
     // Write data to file
     ofstream outdata;
     outdata.open("output.txt");
