@@ -6,16 +6,16 @@
 #include "../../CoordFiles/matrixOps.h"
 #include "../../CoordFiles/coordOps.h"
 
-sphere::sphere(int i) :
-transform(matrix(4, 4, 1)),
-surfaceMaterial(material(color(1,1,1),
-                         0.1,0.9,0.9,200)) {
+sphere::sphere(int i) {
     id = i;
+    surfaceMaterial = material(color(1,1,1),
+                               0.1, 0.9,0.9,200);
 }
 
-sphere::sphere(int i, matrix m, material mat) : transform(m), surfaceMaterial(mat) {
+sphere::sphere(int i, matrix m, material mat) {
     id = i;
     transform = m;
+    surfaceMaterial = mat;
 }
 
 vec sphere::normalAt(point worldPoint, matrix inverseTransform) {

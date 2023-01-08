@@ -11,11 +11,14 @@
 #include "intersection.h"
 #include "../Shapes/sphere.h"
 #include "pointLight.h"
+#include "../WorldFiles/world.h"
+#include "computation.h"
 #include <vector>
 
 class rayOps {
 public:
-    static vector<intersection> intersect(sphere s, ray r, matrix inverseTransform);
+    static vector<intersection> intersect(shape s, ray r, matrix inverseTransform);
+    static vector<intersection> intersectWorld(world w, ray r);
     static vector<intersection> hit(vector<intersection> intersections);
     static vec reflect(vec in, vec normal);
     static color lighting(material material, pointLight light,

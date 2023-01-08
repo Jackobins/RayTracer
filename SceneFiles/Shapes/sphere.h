@@ -14,9 +14,7 @@
 
 class sphere : public shape {
 public:
-    int id;
-    matrix transform;
-    material surfaceMaterial;
+    static int nextId;
 
     explicit sphere(int id);
     sphere(int id, matrix transform, material material);

@@ -7,8 +7,11 @@
 #include "../../CanvasFiles/colorOps.h"
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
-vector<intersection> rayOps::intersect(sphere s, ray r, matrix inverseTransform) {
+using namespace std;
+
+vector<intersection> rayOps::intersect(shape s, ray r, matrix inverseTransform) {
     ray r2 = r.transform(inverseTransform);
 
     vec sphereToRay = vec(r2.origin.x - 0, r2.origin.y - 0, r2.origin.z - 0);
@@ -31,7 +34,7 @@ vector<intersection> rayOps::hit(vector<intersection> intersections) {
     if (intersections.empty()) {
         return {};
     }
-    intersection min = intersection(INT_MAX, sphere(-1));
+    intersection min = intersection(INT_MAX, sphere(-5));
     for (intersection i : intersections) {
         if (i.t >= 0 && i.t < min.t) {
             min = i;
@@ -78,4 +81,19 @@ color rayOps::lighting(material material, pointLight light, point point, vec eye
     }
 
     return colorOps::add(ambientColor, colorOps::add(diffuseColor, specularColor));
+}
+
+vector<intersection> rayOps::intersectWorld(world w, ray r) {
+    vector<intersection> output = {};
+    for (shape s : w.shapes) {
+        matrix inverseTransform = s.transform.inverse();
+        for (intersection i: intersect(s, r, inverseTransform)) {
+            output.push_back(i);
+        }
+    }
+    sort(output.begin(), output.end(),
+         [](const intersection& a, const intersection& b) {
+        return a.t < b.t;
+    });
+    return output;
 }
