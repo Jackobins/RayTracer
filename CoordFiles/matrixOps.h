@@ -11,16 +11,16 @@
 
 class matrixOps {
 public:
-    constexpr static float EPSILON = 0.00001;
+    constexpr static double EPSILON = 0.00001;
     static bool areEqual(matrix m1, matrix m2);
     static matrix multiply(matrix m1, matrix m2);
     static coord multiply(matrix m, coord c);
-    static matrix translationMatrix(float x, float y, float z);
-    static matrix scalingMatrix(float x, float y, float z);
-    static matrix rotationMatrix(int axis, float radians);
-    static matrix shearMatrix(float xWithY, float xWithZ,
-                              float yWithX, float yWithZ,
-                              float zWithX, float zWithY);
+    static matrix translationMatrix(double x, double y, double z);
+    static matrix scalingMatrix(double x, double y, double z);
+    static matrix rotationMatrix(int axis, double radians);
+    static matrix shearMatrix(double xWithY, double xWithZ,
+                              double yWithX, double yWithZ,
+                              double zWithX, double zWithY);
 };
 
 

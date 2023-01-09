@@ -12,7 +12,7 @@ bool coordOps::areEqual(coord c1, coord c2) {
             abs(c1.x - c2.x) <= EPSILON
             && abs(c1.y - c2.y) <= EPSILON
             && abs(c1.z - c2.z) <= EPSILON
-            && abs((float)c1.w - (float)c2.w) <= EPSILON;
+            && abs((double)c1.w - (double)c2.w) <= EPSILON;
 }
 
 coord coordOps::add(coord c1, coord c2) {
@@ -41,8 +41,8 @@ coord coordOps::subtract(coord c1, coord c2) {
     }
 }
 
-float coordOps::dot(vec v1, vec v2) {
-    return (float) (
+double coordOps::dot(vec v1, vec v2) {
+    return (double) (
             (v1.x * v2.x)
             + (v1.y * v2.y)
             + (v1.z * v2.z)
@@ -50,9 +50,9 @@ float coordOps::dot(vec v1, vec v2) {
 }
 
 vec coordOps::cross(vec v1, vec v2) {
-    float newX = (v1.y * v2.z) - (v1.z * v2.y);
-    float newY = (v1.z * v2.x) - (v1.x * v2.z);
-    float newZ = (v1.x * v2.y) - (v1.y * v2.x);
+    double newX = (v1.y * v2.z) - (v1.z * v2.y);
+    double newY = (v1.z * v2.x) - (v1.x * v2.z);
+    double newZ = (v1.x * v2.y) - (v1.y * v2.x);
     vec v = vec(newX, newY, newZ);
     return v;
 }

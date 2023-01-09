@@ -5,14 +5,14 @@
 #include "vec.h"
 #include<cmath>
 
-vec::vec(float xcoord, float ycoord, float zcoord) : coord() {
+vec::vec(double xcoord, double ycoord, double zcoord) : coord() {
     x = xcoord;
     y = ycoord;
     z = zcoord;
     w = 0;
 }
 
-vec::vec(float xcoord, float ycoord, float zcoord, float wcoord) : coord() {
+vec::vec(double xcoord, double ycoord, double zcoord, double wcoord) : coord() {
     x = xcoord;
     y = ycoord;
     z = zcoord;
@@ -27,13 +27,13 @@ vec vec::negate() {
     return vec2;
 }
 
-float vec::magnitude() {
-    return (float) sqrt(pow(x, 2) +
+double vec::magnitude() {
+    return (double) sqrt(pow(x, 2) +
     pow(y, 2) +
     pow(z, 2));
 }
 
-vec vec::scalarMultiply(float scalar) {
+vec vec::scalarMultiply(double scalar) {
     vec vec2 = vec(x * scalar, y * scalar, z* scalar);
     if (w != 0) {
         vec2.w *= scalar;

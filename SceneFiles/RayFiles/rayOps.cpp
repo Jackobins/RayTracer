@@ -15,17 +15,17 @@ vector<intersection> rayOps::intersect(shape s, ray r, matrix inverseTransform) 
     ray r2 = r.transform(inverseTransform);
 
     vec sphereToRay = vec(r2.origin.x - 0, r2.origin.y - 0, r2.origin.z - 0);
-    float a = coordOps::dot(r2.direction, r2.direction);
-    float b = 2 * coordOps::dot(r2.direction, sphereToRay);
-    float c = coordOps::dot(sphereToRay, sphereToRay) - 1;
-    float discriminant = pow(b, 2) - (4 * a * c);
+    double a = coordOps::dot(r2.direction, r2.direction);
+    double b = 2 * coordOps::dot(r2.direction, sphereToRay);
+    double c = coordOps::dot(sphereToRay, sphereToRay) - 1;
+    double discriminant = pow(b, 2) - (4 * a * c);
 
     if (discriminant < 0) {
         return {};
     }
 
-    float t1 = (b*-1 - sqrt(discriminant)) / (2*a);
-    float t2 = (b*-1 + sqrt(discriminant)) / (2*a);
+    double t1 = (b*-1 - sqrt(discriminant)) / (2*a);
+    double t2 = (b*-1 + sqrt(discriminant)) / (2*a);
 
     return {intersection(t1, s), intersection(t2, s)};
 }
@@ -48,18 +48,24 @@ vector<intersection> rayOps::hit(vector<intersection> intersections) {
 }
 
 vec rayOps::reflect(vec in, vec normal) {
-    float normalScalar = 2 * coordOps::dot(in, normal);
+    double normalScalar = 2 * coordOps::dot(in, normal);
     vec newNormal = normal.scalarMultiply(normalScalar);
     return coordOps::coordToVec(coordOps::subtract(in, newNormal));
 }
 
-color rayOps::lighting(material material, pointLight light, point point, vec eyeVec, vec normalVec) {
+color rayOps::lighting(material material, pointLight light,
+                       point point, vec eyeVec, vec normalVec, bool inShadow) {
     color effectiveColor = colorOps::multiply(material.surfaceColor, light.intensity);
     vec lightVec = vec(light.position.x - point.x,
                        light.position.y - point.y,
                        light.position.z - point.z).normalize();
     color ambientColor = effectiveColor.scalarMultiply(material.ambient);
-    float lightDotNormal = coordOps::dot(lightVec, normalVec);
+
+    if (inShadow) {
+        return ambientColor;
+    }
+
+    double lightDotNormal = coordOps::dot(lightVec, normalVec);
 
     color diffuseColor = color(0,0,0);
     color specularColor = color(0,0,0);
@@ -70,12 +76,12 @@ color rayOps::lighting(material material, pointLight light, point point, vec eye
     } else {
         diffuseColor = effectiveColor.scalarMultiply(material.diffuse * lightDotNormal);
         vec reflectVec = reflect(lightVec.negate(), normalVec);
-        float reflectDotEye = coordOps::dot(reflectVec, eyeVec);
+        double reflectDotEye = coordOps::dot(reflectVec, eyeVec);
 
         if (reflectDotEye <= 0) {
             specularColor = color(0,0,0);
         } else {
-            float factor = pow(reflectDotEye, material.shininess);
+            double factor = pow(reflectDotEye, material.shininess);
             specularColor = (light.intensity).scalarMultiply(material.specular * factor);
         }
     }
@@ -83,12 +89,13 @@ color rayOps::lighting(material material, pointLight light, point point, vec eye
     return colorOps::add(ambientColor, colorOps::add(diffuseColor, specularColor));
 }
 
-vector<intersection> rayOps::intersectWorld(world w, ray r) {
+vector<intersection> rayOps::intersectWorld(world w, ray r, vector<matrix> inverseMatrices) {
     vector<intersection> output = {};
-    for (shape s : w.shapes) {
-        matrix inverseTransform = s.transform.inverse();
-        for (intersection i: intersect(s, r, inverseTransform)) {
-            output.push_back(i);
+
+    for (int i = 0; i < w.shapes.size(); i++) {
+        vector<intersection> xs = intersect(w.shapes[i], r, inverseMatrices[i]);
+        for (intersection intersection : xs) {
+            output.push_back(intersection);
         }
     }
     sort(output.begin(), output.end(),

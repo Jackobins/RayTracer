@@ -16,7 +16,7 @@ public:
     vec direction;
 
     ray(point origin, vec direction);
-    point position(float t);
+    point position(double t);
     ray transform(matrix m);
 };
 

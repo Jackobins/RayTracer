@@ -10,20 +10,20 @@ using namespace std;
 
 class matrix {
 public:
-    vector<vector<float>> mat;
+    vector<vector<double>> mat;
 
     matrix(size_t rows, size_t columns);
-    matrix(size_t rows, size_t columns, float diagonalNum); // create an identity matrix
+    matrix(size_t rows, size_t columns, double diagonalNum); // create an identity matrix
     size_t height();
     size_t width();
-    void writeRow(int rowNum, vector<float> newRow);
-    void writeColumn(int columnNum, vector<float> newColumn);
-    matrix scalarMultiply(float scalar);
+    void writeRow(int rowNum, vector<double> newRow);
+    void writeColumn(int columnNum, vector<double> newColumn);
+    matrix scalarMultiply(double scalar);
     matrix transpose();
     matrix subMatrix(int row, int column);
-    float determinant();
-    float minor(int row, int column);
-    float cofactor(int row, int column);
+    double determinant();
+    double minor(int row, int column);
+    double cofactor(int row, int column);
     matrix inverse();
 };
 

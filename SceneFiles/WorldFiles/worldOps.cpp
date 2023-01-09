@@ -5,15 +5,17 @@
 #include "worldOps.h"
 #include "../RayFiles/rayOps.h"
 
-color worldOps::shadeHit(world world, computation comps) {
+color worldOps::shadeHit(world world, computation comps, vector<matrix> inverseMatrices) {
+    bool inShadow = isShadowed(world, comps.overPoint, inverseMatrices);
     return rayOps::lighting(comps.object.surfaceMaterial,
                             world.light,
-                            comps.point,
+                            comps.overPoint,
                             comps.eyeVec,
-                            comps.normalVec);
+                            comps.normalVec,
+                            inShadow);
 
-    // Note: can support multiple light sources by iterating over all light sources,
-    //       calling lighting() for each one, and adding the colors together.
+    //// Note: can support multiple light sources by iterating over all light sources,
+    ////       calling lighting() for each one, and adding the colors together.
 }
 
 //color worldOps::colorAt(const world& world, ray ray) {
@@ -52,12 +54,17 @@ canvas worldOps::render(camera camera, const world& world, const matrix& inverse
     shape currentObject = sphere(-100);
     matrix currentInverseTransform = matrix(4,4,1);
 
+    vector<matrix> inverseMatrices;
+    for (shape s : world.shapes) {
+        inverseMatrices.push_back(s.transform.inverse());
+    }
+
     for (int i = 0; i < camera.vSize; i++) {
         for (int j = 0; j < camera.hSize; j++) {
             ray r = camera.rayForPixel(j, i, inverseTransform);
 
             color c = color(0,0,0);
-            vector<intersection> xs = rayOps::intersectWorld(world, r);
+            vector<intersection> xs = rayOps::intersectWorld(world, r, inverseMatrices);
             vector<intersection> hits = rayOps::hit(xs);
 
             if (!hits.empty()) {
@@ -68,7 +75,7 @@ canvas worldOps::render(camera camera, const world& world, const matrix& inverse
                 computation comps = computation(hits[0],
                                                 r,
                                                 currentInverseTransform);
-                c = shadeHit(world, comps);
+                c = shadeHit(world, comps, inverseMatrices);
             }
 
             image.writePixel(i, j, c);
@@ -76,4 +83,24 @@ canvas worldOps::render(camera camera, const world& world, const matrix& inverse
     }
 
     return image;
+}
+
+bool worldOps::isShadowed(world world, point point, vector<matrix> inverseMatrices) {
+    vec v = vec(world.light.position.x - point.x,
+                world.light.position.y - point.y,
+                world.light.position.z - point.z);
+    double distance = v.magnitude();
+    vec direction = v.normalize();
+
+    ray r = ray(point, direction);
+    vector<intersection> intersections = rayOps::intersectWorld(world, r, inverseMatrices);
+    vector<intersection> hits = rayOps::hit(intersections);
+
+    if (!hits.empty()) {
+        if (hits[0].t < distance) {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }

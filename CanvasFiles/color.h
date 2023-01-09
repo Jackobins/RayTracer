@@ -8,12 +8,12 @@
 
 class color {
 public:
-    float r;
-    float g;
-    float b;
+    double r;
+    double g;
+    double b;
 
-    color(float red, float green, float blue);
-    color scalarMultiply(float scalar);
+    color(double red, double green, double blue);
+    color scalarMultiply(double scalar);
 };
 
 

@@ -5,16 +5,19 @@
 #include "computation.h"
 
 computation::computation(intersection intersection, ray ray, matrix inverseTransform) :
-point(ray.position(intersection.t)),
+regularPoint(ray.position(intersection.t)),
 eyeVec(ray.direction.negate()),
-normalVec(vec(1,1,1)) {
+normalVec(vec(1,1,1)),
+overPoint(point(1,1,1)) {
     t = intersection.t;
     object = intersection.object;
-    normalVec = intersection.object.normalAt(point, inverseTransform);
+    normalVec = intersection.object.normalAt(regularPoint, inverseTransform);
     if (coordOps::dot(normalVec, eyeVec) < 0) {
         inside = true;
         normalVec = normalVec.negate();
     } else {
         inside = false;
     }
+    overPoint = coordOps::coordToPoint(coordOps::add(regularPoint,
+                                                     normalVec.scalarMultiply(EPSILON)));
 }

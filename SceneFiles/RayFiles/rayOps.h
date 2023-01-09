@@ -18,11 +18,11 @@
 class rayOps {
 public:
     static vector<intersection> intersect(shape s, ray r, matrix inverseTransform);
-    static vector<intersection> intersectWorld(world w, ray r);
+    static vector<intersection> intersectWorld(world w, ray r, vector<matrix> inverseMatrices);
     static vector<intersection> hit(vector<intersection> intersections);
     static vec reflect(vec in, vec normal);
     static color lighting(material material, pointLight light,
-                          point point, vec eyeVec, vec normalVec);
+                          point point, vec eyeVec, vec normalVec, bool inShadow);
 };
 
 #endif //RAYTRACER_RAYOPS_H

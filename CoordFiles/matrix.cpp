@@ -9,7 +9,7 @@ using namespace std;
 
 matrix::matrix(size_t rows, size_t columns) {
     for (int i = 0; i < rows; i++) {
-        vector<float> row;
+        vector<double> row;
         for (int j = 0; j < columns; j++) {
             row.push_back(0);
         }
@@ -17,9 +17,9 @@ matrix::matrix(size_t rows, size_t columns) {
     }
 }
 
-matrix::matrix(size_t rows, size_t columns, float diagonalNum) {
+matrix::matrix(size_t rows, size_t columns, double diagonalNum) {
     for (int i = 0; i < rows; i++) {
-        vector<float> row;
+        vector<double> row;
         for (int j = 0; j < rows; j++) {
             row.push_back(0);
         }
@@ -39,7 +39,7 @@ size_t matrix::width() {
 }
 
 
-void matrix::writeRow(int rowNum, vector<float> newRow) {
+void matrix::writeRow(int rowNum, vector<double> newRow) {
     if (newRow.size() != mat[0].size()) {
         cout << "Row was not a compatible size" << endl;
         return;
@@ -47,7 +47,7 @@ void matrix::writeRow(int rowNum, vector<float> newRow) {
     mat[rowNum] = std::move(newRow);
 }
 
-void matrix::writeColumn(int columnNum, vector<float> newColumn) {
+void matrix::writeColumn(int columnNum, vector<double> newColumn) {
     if (newColumn.size() != mat.size()) {
         cout << "Column was not a compatible size" << endl;
         return;
@@ -57,7 +57,7 @@ void matrix::writeColumn(int columnNum, vector<float> newColumn) {
     }
 }
 
-matrix matrix::scalarMultiply(float scalar) {
+matrix matrix::scalarMultiply(double scalar) {
     matrix m2 = matrix(mat[0].size(), mat.size());
     for (int i = 0; i < mat.size(); i++) {
         for (int j = 0; j < mat[0].size(); j++) {
@@ -87,22 +87,22 @@ matrix matrix::subMatrix(int row, int column) {
     return m2;
 }
 
-float matrix::determinant() {
+double matrix::determinant() {
     if (mat.size() == 2) {
         return mat[0][0]*mat[1][1] - mat[0][1]*mat[1][0];
     }
-    float det = 0;
+    double det = 0;
     for (int i = 0; i < mat.size(); i++) {
         det += mat[0][i] * cofactor(0, i);
     }
     return det;
 }
 
-float matrix::minor(int row, int column) {
+double matrix::minor(int row, int column) {
     return subMatrix(row, column).determinant();
 }
 
-float matrix::cofactor(int row, int column) {
+double matrix::cofactor(int row, int column) {
     if ((row + column)%2 == 0) {
         return minor(row, column);
     } else {
@@ -111,7 +111,7 @@ float matrix::cofactor(int row, int column) {
 }
 
 matrix matrix::inverse() {
-    float det = determinant();
+    double det = determinant();
     if (det == 0) {
         cout << "Determinant = 0, cannot compute inverse" << endl;
         return *this;

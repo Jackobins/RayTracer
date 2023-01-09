@@ -9,7 +9,7 @@
 
 class point : public coord {
 public:
-    point(float xcoord, float ycoord, float zcoord);
+    point(double xCoord, double yCoord, double zCoord);
     point& operator=(const coord& coord) {
         x = coord.x;
         y = coord.y;

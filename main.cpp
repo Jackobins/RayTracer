@@ -19,6 +19,7 @@ using std::ofstream;
 using namespace std;
 
 int main() {
+
     sphere floor = sphere(1);
     floor.transform = matrixOps::scalingMatrix(10, 0.01, 10);
     floor.surfaceMaterial = material();
@@ -79,49 +80,7 @@ int main() {
 
     canvas c = worldOps::render(cam, w, cam.transform.inverse());
 
-
-//    point rayOrigin = point(0 ,0, -5);
-//    float wallZ = 10;
-//    float wallSize = 7.0;
-//    int canvasPixels = 800;
-//    float pixelSize = wallSize / canvasPixels;
-//    float half = wallSize / 2;
-//    canvas c = canvas(canvasPixels, canvasPixels);
-//    color red = color(1, 0, 0);
-//    sphere s = sphere(1,
-//                      matrixOps::scalingMatrix(1, 0.5, 1),
-//                      material());
-//    s.surfaceMaterial.surfaceColor = color(1, 0.2, 0.6);
-//    matrix inverseTransform = s.transform.inverse();
-//
-//    point lightPosition = point(0, 10, -5);
-//    color lightColor = color(1,1,1);
-//    pointLight light = pointLight(lightPosition, lightColor);
-//
-//    for (int i = 0; i < canvasPixels; i++) {
-//        float worldY = half - (pixelSize * i);
-//        for (int j = 0; j < canvasPixels; j++) {
-//            float worldX = (pixelSize * j) - half;
-//            point position = point(worldX, worldY, wallZ);
-//            vec direction = coordOps::coordToVec(
-//                    coordOps::subtract(position, rayOrigin)).normalize();
-//            ray r = ray(rayOrigin, direction);
-//            vector<intersection> xs = rayOps::intersect(s, r, inverseTransform);
-//
-//            vector<intersection> hits = rayOps::hit(xs);
-//            if (!hits.empty()) {
-//                point point = r.position(hits[0].t);
-//                vec normal = s.normalAt(point, inverseTransform);
-//                vec eye = r.direction.negate();
-//                c.writePixel(i, j,
-//                             rayOps::lighting(s.surfaceMaterial, light,
-//                                              point, eye, normal));
-//            }
-//        }
-//    }
-
-
-    // Write data to file
+////     Write data to file
     ofstream outdata;
     outdata.open("output.txt");
     if (!outdata) {

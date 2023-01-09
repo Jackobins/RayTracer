@@ -8,7 +8,7 @@
 #include <cmath>
 #include <iostream>
 
-camera::camera(int h, int v, float fov) : transform(matrix(4,4,1)) {
+camera::camera(int h, int v, double fov) : transform(matrix(4,4,1)) {
     hSize = h;
     vSize = v;
     fieldOfView = fov;
@@ -16,7 +16,7 @@ camera::camera(int h, int v, float fov) : transform(matrix(4,4,1)) {
 }
 
 
-camera::camera(int h, int v, float fov, matrix transform) :
+camera::camera(int h, int v, double fov, matrix transform) :
 transform(transform){
     hSize = h;
     vSize = v;
@@ -25,8 +25,8 @@ transform(transform){
 }
 
 void camera::calculatePixelSize() {
-    float halfView = tan(fieldOfView/2);
-    float aspect = ((float)hSize/(float)vSize);
+    double halfView = tan(fieldOfView/2);
+    double aspect = ((double)hSize/(double)vSize);
     if (aspect >= 1) {
         halfWidth = halfView;
         halfHeight = halfView / aspect;
@@ -38,10 +38,10 @@ void camera::calculatePixelSize() {
 }
 
 ray camera::rayForPixel(int px, int py, matrix inverseTransform) {
-    float xOffset = (px + 0.5) * pixelSize;
-    float yOffset = (py + 0.5) * pixelSize;
-    float worldX = halfWidth - xOffset;
-    float worldY = halfHeight - yOffset;
+    double xOffset = (px + 0.5) * pixelSize;
+    double yOffset = (py + 0.5) * pixelSize;
+    double worldX = halfWidth - xOffset;
+    double worldY = halfHeight - yOffset;
 
     point pixel = coordOps::coordToPoint(matrixOps::multiply(
             inverseTransform, point(worldX, worldY, -1)));

@@ -4,12 +4,12 @@
 
 #include "color.h"
 
-color::color(float red, float green, float blue) {
+color::color(double red, double green, double blue) {
     r = red;
     g = green;
     b = blue;
 }
 
-color color::scalarMultiply(float scalar) {
+color color::scalarMultiply(double scalar) {
     return color(r * scalar, g * scalar, b * scalar);
 }

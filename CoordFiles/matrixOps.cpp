@@ -26,7 +26,7 @@ matrix matrixOps::multiply(matrix m1, matrix m2) {
     matrix m = matrix(m1.height(), m2.width());
     for (int i = 0; i < m.height(); i++) {
         for (int j = 0; j < m.width(); j++) {
-            float entry = 0;
+            double entry = 0;
             for (int x = 0; x < m1.width(); x++) {
                 entry += (m1.mat[i][x] * m2.mat[x][j]);
             }
@@ -48,13 +48,13 @@ coord matrixOps::multiply(matrix m, coord c) {
     return output;
 }
 
-matrix matrixOps::translationMatrix(float x, float y, float z) {
+matrix matrixOps::translationMatrix(double x, double y, double z) {
     matrix m = matrix(4, 4, 1);
     m.writeColumn(3, {x, y, z, 1});
     return m;
 }
 
-matrix matrixOps::scalingMatrix(float x, float y, float z) {
+matrix matrixOps::scalingMatrix(double x, double y, double z) {
     matrix m = matrix(4, 4, 1);
     m.mat[0][0] = x;
     m.mat[1][1] = y;
@@ -62,7 +62,7 @@ matrix matrixOps::scalingMatrix(float x, float y, float z) {
     return m;
 }
 
-matrix matrixOps::rotationMatrix(int axis, float radians) {
+matrix matrixOps::rotationMatrix(int axis, double radians) {
     matrix m = matrix(4, 4, 1);
     if (axis == 0) { // rotate around x-axis
         m.writeColumn(1, {0, cos(radians), sin(radians), 0});
@@ -79,9 +79,9 @@ matrix matrixOps::rotationMatrix(int axis, float radians) {
     return m;
 }
 
-matrix matrixOps::shearMatrix(float xWithY, float xWithZ,
-                              float yWithX, float yWithZ,
-                              float zWithX, float zWithY) {
+matrix matrixOps::shearMatrix(double xWithY, double xWithZ,
+                              double yWithX, double yWithZ,
+                              double zWithX, double zWithY) {
     matrix m = matrix(4, 4, 1);
     m.writeRow(0, {1, xWithY, xWithZ, 0});
     m.writeRow(1, {yWithX, 1, yWithZ, 0});

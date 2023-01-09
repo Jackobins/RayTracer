@@ -8,12 +8,12 @@
 
 class vec : public coord {
 public:
-    vec(float xcoord, float ycoord, float zcoord);
-    vec(float xcoord, float ycoord, float zcoord, float wcoord);
+    vec(double xcoord, double ycoord, double zcoord);
+    vec(double xcoord, double ycoord, double zcoord, double wcoord);
 
     vec negate();
-    float magnitude();
-    vec scalarMultiply(float scalar);
+    double magnitude();
+    vec scalarMultiply(double scalar);
     vec normalize();
 
     vec& operator=(const coord& coord) {

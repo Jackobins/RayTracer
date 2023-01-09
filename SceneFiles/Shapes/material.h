@@ -11,13 +11,13 @@
 class material {
 public:
     color surfaceColor;
-    float ambient;
-    float diffuse;
-    float specular;
-    float shininess;
+    double ambient;
+    double diffuse;
+    double specular;
+    double shininess;
 
     material();
-    material(color surfaceColor, float ambient, float diffuse, float specular, float shininess);
+    material(color surfaceColor, double ambient, double diffuse, double specular, double shininess);
 };
 
 

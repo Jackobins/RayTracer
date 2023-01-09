@@ -11,7 +11,7 @@ ray::ray(point point, vec vec) : origin(point), direction(vec) {
     direction = vec;
 }
 
-point ray::position(float t) {
+point ray::position(double t) {
     return coordOps::coordToPoint(coordOps::add(origin, direction.scalarMultiply(t)));
 }
 

@@ -13,14 +13,14 @@ class camera {
 public:
     int hSize;
     int vSize;
-    float fieldOfView;
+    double fieldOfView;
     matrix transform;
-    float halfWidth;
-    float halfHeight;
-    float pixelSize;
+    double halfWidth;
+    double halfHeight;
+    double pixelSize;
 
-    camera(int hSize, int vSize, float fieldOfView);
-    camera(int hSize, int vSize, float fieldOfView, matrix transform);
+    camera(int hSize, int vSize, double fieldOfView);
+    camera(int hSize, int vSize, double fieldOfView, matrix transform);
     void calculatePixelSize();
     ray rayForPixel(int px, int py, matrix inverseTransform);
 };

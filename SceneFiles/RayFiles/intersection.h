@@ -10,10 +10,10 @@
 
 class intersection {
 public:
-    float t;
+    double t;
     shape object;
 
-    intersection(float t, shape object);
+    intersection(double t, shape object);
 };
 
 

@@ -4,9 +4,9 @@
 #include <tuple>
 #include "point.h"
 
-point::point(float xcoord, float ycoord, float zcoord) {
-    x = xcoord;
-    y = ycoord;
-    z = zcoord;
+point::point(double xCoord, double yCoord, double zCoord) {
+    x = xCoord;
+    y = yCoord;
+    z = zCoord;
     w = 1;
 }

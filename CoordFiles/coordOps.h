@@ -13,11 +13,11 @@ using namespace std;
 
 class coordOps {
 public:
-    constexpr static float EPSILON = 0.00001;
+    constexpr static double EPSILON = 0.00001;
     static bool areEqual(coord c1, coord c2);
     static coord add(coord c1, coord c2);
     static coord subtract (coord c1, coord c2);
-    static float dot(vec v1, vec v2);
+    static double dot(vec v1, vec v2);
     static vec cross(vec v1, vec v2);
     static vec coordToVec(coord c);
     static point coordToPoint(coord c);

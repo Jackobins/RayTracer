@@ -11,7 +11,7 @@ material::material() : surfaceColor(color(1,1,1)) {
     shininess = 200;
 }
 
-material::material(color color, float amb, float dif, float spec, float shin)
+material::material(color color, double amb, double dif, double spec, double shin)
 : surfaceColor(color) {
     surfaceColor = color;
     ambient = amb;

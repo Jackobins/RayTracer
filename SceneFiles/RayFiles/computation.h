@@ -14,9 +14,11 @@
 
 class computation {
 public:
-    float t;
+    constexpr static double_t EPSILON = 0.00001;
+    double t;
     shape object;
-    point point;
+    point regularPoint;
+    point overPoint;
     vec eyeVec;
     vec normalVec;
     bool inside;
