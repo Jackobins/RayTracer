@@ -5,10 +5,10 @@
 #include "worldOps.h"
 #include "../RayFiles/rayOps.h"
 
-color worldOps::shadeHit(world world, computation comps) {
+color worldOps::shadeHit(world* world, computation comps) {
     bool inShadow = isShadowed(world, comps.overPoint);
     return rayOps::lighting(comps.object->surfaceMaterial,
-                            world.light,
+                            world->light,
                             comps.overPoint,
                             comps.eyeVec,
                             comps.normalVec,
@@ -31,12 +31,12 @@ matrix worldOps::viewTransform(point from, point to, vec up) {
     return matrixOps::multiply(m, matrixOps::translationMatrix(-from.x,-from.y,-from.z));
 }
 
-canvas worldOps::render(camera camera, const world& world, const matrix& inverseTransform) {
-    canvas image = canvas(camera.vSize, camera.hSize);
+canvas worldOps::render(camera* camera, world* world) {
+    canvas image = canvas(camera->vSize, camera->hSize);
 
-    for (int i = 0; i < camera.vSize; i++) {
-        for (int j = 0; j < camera.hSize; j++) {
-            ray r = camera.rayForPixel(j, i, inverseTransform);
+    for (int i = 0; i < camera->vSize; i++) {
+        for (int j = 0; j < camera->hSize; j++) {
+            ray r = camera->rayForPixel(j, i);
 
             color c = color(0,0,0);
             vector<intersection> xs = rayOps::intersectWorld(world, r);
@@ -54,10 +54,10 @@ canvas worldOps::render(camera camera, const world& world, const matrix& inverse
     return image;
 }
 
-bool worldOps::isShadowed(world world, point point) {
-    vec v = vec(world.light.position.x - point.x,
-                world.light.position.y - point.y,
-                world.light.position.z - point.z);
+bool worldOps::isShadowed(world* world, point point) {
+    vec v = vec(world->light.position.x - point.x,
+                world->light.position.y - point.y,
+                world->light.position.z - point.z);
     double distance = v.magnitude();
     vec direction = v.normalize();
 

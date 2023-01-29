@@ -8,7 +8,7 @@
 #include <cmath>
 #include <iostream>
 
-camera::camera(int h, int v, double fov) : transform(matrix(4,4,1)) {
+camera::camera(int h, int v, double fov) : inverseTransform(matrix(4,4,1)) {
     hSize = h;
     vSize = v;
     fieldOfView = fov;
@@ -17,7 +17,7 @@ camera::camera(int h, int v, double fov) : transform(matrix(4,4,1)) {
 
 
 camera::camera(int h, int v, double fov, matrix transform) :
-transform(transform){
+inverseTransform(transform.inverse()){
     hSize = h;
     vSize = v;
     fieldOfView = fov;
@@ -37,7 +37,7 @@ void camera::calculatePixelSize() {
     pixelSize = (2 * halfWidth) / hSize;
 }
 
-ray camera::rayForPixel(int px, int py, matrix inverseTransform) {
+ray camera::rayForPixel(int px, int py) {
     double xOffset = (px + 0.5) * pixelSize;
     double yOffset = (py + 0.5) * pixelSize;
     double worldX = halfWidth - xOffset;
@@ -51,4 +51,8 @@ ray camera::rayForPixel(int px, int py, matrix inverseTransform) {
                         pixel.y - origin.y,
                         pixel.z - origin.z).normalize();
     return ray(origin, direction);
+}
+
+void camera::setTransform(matrix transform) {
+    inverseTransform = transform.inverse();
 }

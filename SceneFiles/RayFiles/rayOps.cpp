@@ -91,11 +91,11 @@ color rayOps::lighting(material material, pointLight light,
     return colorOps::add(ambientColor, colorOps::add(diffuseColor, specularColor));
 }
 
-vector<intersection> rayOps::intersectWorld(world w, ray r) {
+vector<intersection> rayOps::intersectWorld(world* w, ray r) {
     vector<intersection> output = {};
 
-    for (int i = 0; i < w.shapes.size(); i++) {
-        vector<intersection> xs = intersect(w.shapes[i], r);
+    for (int i = 0; i < w->shapes.size(); i++) {
+        vector<intersection> xs = intersect(w->shapes[i], r);
         for (intersection intersection : xs) {
             output.push_back(intersection);
         }

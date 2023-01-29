@@ -70,14 +70,14 @@ int main() {
 
     pointLight lightSource = pointLight(point(-10,10,-10),
                                         color(1,1,1));
-    world w = world(lightSource, {floor, leftWall, rightWall,
+    world* w = new world(lightSource, {floor, leftWall, rightWall,
                                   middle, left, right});
-    camera cam = camera(852, 480, M_PI/3);
-    cam.transform = worldOps::viewTransform(point(0, 1.5, -5),
-                                          point(0,1,0),
-                                          vec(0,1,0));
+    camera* cam = new camera(480, 360, M_PI/3);
+    cam->setTransform(worldOps::viewTransform(point(0, 1.5, -5),
+                                             point(0,1,0),
+                                             vec(0,1,0)));
 
-    canvas c = worldOps::render(cam, w, cam.transform.inverse());
+    canvas c = worldOps::render(cam, w);
 
 
 ////     Write data to file

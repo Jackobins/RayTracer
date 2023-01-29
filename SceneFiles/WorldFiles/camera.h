@@ -14,7 +14,7 @@ public:
     int hSize;
     int vSize;
     double fieldOfView;
-    matrix transform;
+    matrix inverseTransform;
     double halfWidth;
     double halfHeight;
     double pixelSize;
@@ -22,7 +22,8 @@ public:
     camera(int hSize, int vSize, double fieldOfView);
     camera(int hSize, int vSize, double fieldOfView, matrix transform);
     void calculatePixelSize();
-    ray rayForPixel(int px, int py, matrix inverseTransform);
+    ray rayForPixel(int px, int py);
+    void setTransform(matrix transform);
 };
 
 
