@@ -16,14 +16,14 @@ class computation {
 public:
     constexpr static double_t EPSILON = 0.00001;
     double t;
-    shape object;
+    shape* object;
     point regularPoint;
     point overPoint;
     vec eyeVec;
     vec normalVec;
     bool inside;
 
-    computation(intersection intersection, ray ray, matrix inverseTransform);
+    computation(intersection intersection, ray ray);
 };
 
 

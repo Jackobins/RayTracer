@@ -11,13 +11,13 @@
 
 using namespace std;
 
-vector<intersection> rayOps::intersect(shape s, ray r, matrix inverseTransform) {
-    ray r2 = r.transform(inverseTransform);
+vector<intersection> rayOps::intersect(shape* s, ray r) {
+    ray r2 = r.transform(s->inverseTransform);
 
-    vec sphereToRay = vec(r2.origin.x - 0, r2.origin.y - 0, r2.origin.z - 0);
+    vec shapeToRay = vec(r2.origin.x - 0, r2.origin.y - 0, r2.origin.z - 0); // only for spheres !!!
     double a = coordOps::dot(r2.direction, r2.direction);
-    double b = 2 * coordOps::dot(r2.direction, sphereToRay);
-    double c = coordOps::dot(sphereToRay, sphereToRay) - 1;
+    double b = 2 * coordOps::dot(r2.direction, shapeToRay);
+    double c = coordOps::dot(shapeToRay, shapeToRay) - 1;
     double discriminant = pow(b, 2) - (4 * a * c);
 
     if (discriminant < 0) {
@@ -34,7 +34,8 @@ vector<intersection> rayOps::hit(vector<intersection> intersections) {
     if (intersections.empty()) {
         return {};
     }
-    intersection min = intersection(INT_MAX, sphere(-5));
+    sphere* dummy = new sphere(-5);
+    intersection min = intersection(INT_MAX, dummy);
     for (intersection i : intersections) {
         if (i.t >= 0 && i.t < min.t) {
             min = i;
@@ -44,6 +45,7 @@ vector<intersection> rayOps::hit(vector<intersection> intersections) {
     if (min.t < INT_MAX) {
         output.push_back(min);
     }
+    delete dummy;
     return output;
 }
 
@@ -89,11 +91,11 @@ color rayOps::lighting(material material, pointLight light,
     return colorOps::add(ambientColor, colorOps::add(diffuseColor, specularColor));
 }
 
-vector<intersection> rayOps::intersectWorld(world w, ray r, vector<matrix> inverseMatrices) {
+vector<intersection> rayOps::intersectWorld(world w, ray r) {
     vector<intersection> output = {};
 
     for (int i = 0; i < w.shapes.size(); i++) {
-        vector<intersection> xs = intersect(w.shapes[i], r, inverseMatrices[i]);
+        vector<intersection> xs = intersect(w.shapes[i], r);
         for (intersection intersection : xs) {
             output.push_back(intersection);
         }

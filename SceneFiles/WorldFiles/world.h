@@ -15,10 +15,10 @@ using namespace std;
 class world {
 public:
     pointLight light;
-    vector<shape> shapes;
+    vector<shape*> shapes;
 
     world();
-    world(pointLight pointLight, vector<shape> listOfShapes);
+    world(pointLight pointLight, vector<shape*> listOfShapes);
 };
 
 

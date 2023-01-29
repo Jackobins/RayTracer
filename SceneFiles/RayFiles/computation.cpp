@@ -4,14 +4,16 @@
 
 #include "computation.h"
 
-computation::computation(intersection intersection, ray ray, matrix inverseTransform) :
+computation::computation(intersection intersection, ray ray) :
 regularPoint(ray.position(intersection.t)),
 eyeVec(ray.direction.negate()),
 normalVec(vec(1,1,1)),
 overPoint(point(1,1,1)) {
     t = intersection.t;
     object = intersection.object;
-    normalVec = intersection.object.normalAt(regularPoint, inverseTransform);
+
+    normalVec = intersection.object->normalAt(regularPoint);
+
     if (coordOps::dot(normalVec, eyeVec) < 0) {
         inside = true;
         normalVec = normalVec.negate();

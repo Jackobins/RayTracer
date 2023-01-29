@@ -18,7 +18,7 @@ public:
 
     explicit sphere(int id);
     sphere(int id, matrix transform, material material);
-    vec normalAt(point point, matrix inverseTransform);
+    vec normalAt(point point) override;
 };
 
 

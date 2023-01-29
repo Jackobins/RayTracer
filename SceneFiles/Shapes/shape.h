@@ -11,26 +11,24 @@
 #include "../../CoordFiles/vec.h"
 #include "../../CoordFiles/coordOps.h"
 #include "../../CoordFiles/matrixOps.h"
+#include <iostream>
 #include "material.h"
 
 class shape {
 public:
     int id;
-    matrix transform = matrix(4,4,1);
-    material surfaceMaterial;
+    matrix inverseTransform = matrix(4,4,1);
+    material surfaceMaterial = material(color(1,1,1),
+                                        0.1, 0.9,0.9,200);
 
-    vec normalAt(point worldPoint, matrix inverseTransform) {
-        point objectPoint = coordOps::coordToPoint(
-                matrixOps::multiply(inverseTransform, worldPoint));
-        vec objectNormal = coordOps::coordToVec(
-                coordOps::subtract(objectPoint, point(0,0,0)));
-        matrix transposeInverse = inverseTransform.transpose();
-        vec worldNormal = coordOps::coordToVec(
-                matrixOps::multiply(transposeInverse, objectNormal));
-        worldNormal.w = 0;
-        return worldNormal.normalize();
-    };
+    virtual vec normalAt(point worldPoint) {
+        cout << "super called" << endl;
+        return vec(0,0,0);
+    }
+
+    void setTransform(matrix transform) {
+        inverseTransform = transform.inverse();
+    }
 };
-
 
 #endif //RAYTRACER_SHAPE_H

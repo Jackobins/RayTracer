@@ -11,9 +11,9 @@
 class intersection {
 public:
     double t;
-    shape object;
+    shape* object;
 
-    intersection(double t, shape object);
+    intersection(double t, shape* object);
 };
 
 

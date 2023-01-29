@@ -4,7 +4,7 @@
 
 #include "intersection.h"
 
-intersection::intersection(double tValue, shape s) {
+intersection::intersection(double tValue, shape* s) {
     t = tValue;
     object = s;
 }
