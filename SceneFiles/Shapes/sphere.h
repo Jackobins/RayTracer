@@ -14,11 +14,10 @@
 
 class sphere : public shape {
 public:
-    static int nextId;
-
-    explicit sphere(int id);
-    sphere(int id, matrix transform, material material);
+    explicit sphere();
+    sphere(matrix transform, material material);
     vec normalAt(point point) override;
+    vector<double> intersect(ray r) override;
 };
 
 

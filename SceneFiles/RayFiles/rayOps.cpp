@@ -14,27 +14,21 @@ using namespace std;
 vector<intersection> rayOps::intersect(shape* s, ray r) {
     ray r2 = r.transform(s->inverseTransform);
 
-    vec shapeToRay = vec(r2.origin.x - 0, r2.origin.y - 0, r2.origin.z - 0); // only for spheres !!!
-    double a = coordOps::dot(r2.direction, r2.direction);
-    double b = 2 * coordOps::dot(r2.direction, shapeToRay);
-    double c = coordOps::dot(shapeToRay, shapeToRay) - 1;
-    double discriminant = pow(b, 2) - (4 * a * c);
+    vector<double> intersectionTValues = s->intersect(r2);
+    vector<intersection> output;
 
-    if (discriminant < 0) {
-        return {};
+    for (double tValue : intersectionTValues) {
+        output.emplace_back(tValue, s);
     }
 
-    double t1 = (b*-1 - sqrt(discriminant)) / (2*a);
-    double t2 = (b*-1 + sqrt(discriminant)) / (2*a);
-
-    return {intersection(t1, s), intersection(t2, s)};
+    return output;
 }
 
 vector<intersection> rayOps::hit(vector<intersection> intersections) {
     if (intersections.empty()) {
         return {};
     }
-    sphere* dummy = new sphere(-5);
+    sphere* dummy = new sphere();
     intersection min = intersection(INT_MAX, dummy);
     for (intersection i : intersections) {
         if (i.t >= 0 && i.t < min.t) {

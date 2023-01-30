@@ -13,10 +13,10 @@
 #include "../../CoordFiles/matrixOps.h"
 #include <iostream>
 #include "material.h"
+#include "../RayFiles/ray.h"
 
 class shape {
 public:
-    int id;
     matrix inverseTransform = matrix(4,4,1);
     material surfaceMaterial = material(color(1,1,1),
                                         0.1, 0.9,0.9,200);
@@ -24,6 +24,11 @@ public:
     virtual vec normalAt(point worldPoint) {
         cout << "super called" << endl;
         return vec(0,0,0);
+    }
+
+    virtual vector<double> intersect(ray r) {
+        cout << "super called" << endl;
+        return {};
     }
 
     void setTransform(matrix transform) {

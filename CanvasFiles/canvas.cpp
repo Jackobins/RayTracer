@@ -9,7 +9,7 @@ canvas::canvas(int height, int width) {
     for (int i = 0; i < height; i++) {
         vector<color> row;
         for (int j = 0; j < width; j++) {
-            row.push_back(color(0,0,0));
+            row.emplace_back(0,0,0);
         }
         frame.push_back(row);
     }

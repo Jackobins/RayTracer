@@ -10,49 +10,48 @@
 #include "SceneFiles/RayFiles/computation.h"
 #include "SceneFiles/WorldFiles/worldOps.h"
 #include "SceneFiles/WorldFiles/camera.h"
+#include "SceneFiles/Shapes/plane.h"
 
 using std::cerr;
 using std::endl;
 #include <fstream>
 using std::ofstream;
-#include <cstdlib> // for exit function
 using namespace std;
 
 int main() {
 
-    shape* floor = new sphere(1);
-    floor->setTransform(matrixOps::scalingMatrix(10, 0.01, 10));
+    shape* floor = new plane();
     floor->surfaceMaterial = material();
     floor->surfaceMaterial.surfaceColor = color(1,0.9,0.9);
     floor->surfaceMaterial.specular = 0;
 
-    shape* leftWall = new sphere(2);
-    matrix scale = matrixOps::scalingMatrix(10, 0.01, 10);
-    matrix rotateX = matrixOps::rotationMatrix(0, M_PI_2);
-    matrix rotateY = matrixOps::rotationMatrix(1, -1 * M_PI_4);
-    matrix translate = matrixOps::translationMatrix(0,0,5);
-    matrix m = matrixOps::multiply(matrixOps::multiply(
-            matrixOps::multiply(translate, rotateY), rotateX),
-                                   scale);
-    leftWall->setTransform(m);
-    leftWall->surfaceMaterial = floor->surfaceMaterial;
+//    shape* leftWall = new sphere();
+//    matrix scale = matrixOps::scalingMatrix(10, 0.01, 10);
+//    matrix rotateX = matrixOps::rotationMatrix(0, M_PI_2);
+//    matrix rotateY = matrixOps::rotationMatrix(1, -1 * M_PI_4);
+//    matrix translate = matrixOps::translationMatrix(0,0,5);
+//    matrix m = matrixOps::multiply(matrixOps::multiply(
+//            matrixOps::multiply(translate, rotateY), rotateX),
+//                                   scale);
+//    leftWall->setTransform(m);
+//    leftWall->surfaceMaterial = floor->surfaceMaterial;
+//
+//    shape* rightWall = new sphere();
+//    rotateY = matrixOps::rotationMatrix(1, M_PI_4);
+//    matrix m2 = matrixOps::multiply(matrixOps::multiply(
+//            matrixOps::multiply(translate, rotateY), rotateX),
+//                                    scale);
+//    rightWall->setTransform(m2);
+//    rightWall->surfaceMaterial = floor->surfaceMaterial;
 
-    shape* rightWall = new sphere(3);
-    rotateY = matrixOps::rotationMatrix(1, M_PI_4);
-    matrix m2 = matrixOps::multiply(matrixOps::multiply(
-            matrixOps::multiply(translate, rotateY), rotateX),
-                                    scale);
-    rightWall->setTransform(m2);
-    rightWall->surfaceMaterial = floor->surfaceMaterial;
-
-    shape* middle = new sphere(4);
+    shape* middle = new sphere();
     middle->setTransform(matrixOps::translationMatrix(-0.5,1,0.5));
     middle->surfaceMaterial = material();
     middle->surfaceMaterial.surfaceColor = color(0.1,1,0.5);
     middle->surfaceMaterial.diffuse = 0.7;
     middle->surfaceMaterial.specular = 0.3;
 
-    shape* right = new sphere(5);
+    shape* right = new sphere();
     right->setTransform(matrixOps::multiply(matrixOps::translationMatrix(1.5,0.5,-0.5),
                                         matrixOps::scalingMatrix(0.5,0.5,0.5)));
     right->surfaceMaterial = material();
@@ -60,7 +59,7 @@ int main() {
     right->surfaceMaterial.diffuse = 0.7;
     right->surfaceMaterial.specular = 0.3;
 
-    shape* left = new sphere(6);
+    shape* left = new sphere();
     left->setTransform(matrixOps::multiply(matrixOps::translationMatrix(-1.5,0.33,-0.75),
                                        matrixOps::scalingMatrix(0.33,0.33,0.33)));
     left->surfaceMaterial = material();
@@ -70,8 +69,7 @@ int main() {
 
     pointLight lightSource = pointLight(point(-10,10,-10),
                                         color(1,1,1));
-    world* w = new world(lightSource, {floor, leftWall, rightWall,
-                                  middle, left, right});
+    world* w = new world(lightSource, {floor, middle, left, right});
     camera* cam = new camera(480, 360, M_PI/3);
     cam->setTransform(worldOps::viewTransform(point(0, 1.5, -5),
                                              point(0,1,0),
