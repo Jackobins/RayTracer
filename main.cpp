@@ -12,6 +12,11 @@
 #include "SceneFiles/WorldFiles/camera.h"
 #include "SceneFiles/Shapes/plane.h"
 #include "SceneFiles/patternFiles/stripes.h"
+#include "SceneFiles/patternFiles/patternOps.h"
+#include "SceneFiles/patternFiles/gradient.h"
+#include "SceneFiles/patternFiles/ring.h"
+#include "SceneFiles/patternFiles/checkers.h"
+#include "SceneFiles/patternFiles/blendedPattern.h"
 
 using std::cerr;
 using std::endl;
@@ -20,30 +25,14 @@ using std::ofstream;
 using namespace std;
 
 int main() {
+    pattern* checkersPattern = new checkers(color(1,1,1), color(0,0.6,0));
+    pattern* ringPattern = new ring(color(1,0.5,0), color(0,0,1));
 
     shape* floor = new plane();
     floor->surfaceMaterial = material();
     floor->surfaceMaterial.surfaceColor = color(1,0.9,0.9);
     floor->surfaceMaterial.specular = 0;
-
-//    shape* leftWall = new sphere();
-//    matrix scale = matrixOps::scalingMatrix(10, 0.01, 10);
-//    matrix rotateX = matrixOps::rotationMatrix(0, M_PI_2);
-//    matrix rotateY = matrixOps::rotationMatrix(1, -1 * M_PI_4);
-//    matrix translate = matrixOps::translationMatrix(0,0,5);
-//    matrix m = matrixOps::multiply(matrixOps::multiply(
-//            matrixOps::multiply(translate, rotateY), rotateX),
-//                                   scale);
-//    leftWall->setTransform(m);
-//    leftWall->surfaceMaterial = floor->surfaceMaterial;
-//
-//    shape* rightWall = new sphere();
-//    rotateY = matrixOps::rotationMatrix(1, M_PI_4);
-//    matrix m2 = matrixOps::multiply(matrixOps::multiply(
-//            matrixOps::multiply(translate, rotateY), rotateX),
-//                                    scale);
-//    rightWall->setTransform(m2);
-//    rightWall->surfaceMaterial = floor->surfaceMaterial;
+    floor->surfaceMaterial.pattern = new blendedPattern(checkersPattern, ringPattern);
 
     shape* middle = new sphere();
     middle->setTransform(matrixOps::translationMatrix(-0.5,1,0.5));
@@ -68,6 +57,7 @@ int main() {
     left->surfaceMaterial.surfaceColor = color(1, 0.8, 0.1);
     left->surfaceMaterial.diffuse = 0.7;
     left->surfaceMaterial.specular = 0.3;
+    left->surfaceMaterial.pattern = new gradient(color(0,1,0), color(0,0,1));
 
     pointLight lightSource = pointLight(point(-10,10,-10),
                                         color(1,1,1));
@@ -78,7 +68,6 @@ int main() {
                                              vec(0,1,0)));
 
     canvas c = worldOps::render(cam, w);
-
 
 ////     Write data to file
     ofstream outdata;

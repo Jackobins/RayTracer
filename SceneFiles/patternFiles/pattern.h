@@ -18,6 +18,10 @@ public:
         cout << "super patternAt called" << endl;
         return color(0,0,0);
     }
+
+    void setTransform(matrix transform) {
+        inverseTransform = transform.inverse();
+    }
 };
 
 #endif //RAYTRACER_PATTERN_H

@@ -13,6 +13,7 @@ public:
     static color add(color c1, color c2);
     static color subtract (color c1, color c2);
     static color multiply (color c1, color c2);
+    static color average(color c1, color c2);
 };
 
 
