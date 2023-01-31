@@ -8,6 +8,7 @@
 color worldOps::shadeHit(world* world, computation comps) {
     bool inShadow = isShadowed(world, comps.overPoint);
     return rayOps::lighting(comps.object->surfaceMaterial,
+                            comps.object,
                             world->light,
                             comps.overPoint,
                             comps.eyeVec,

@@ -18,8 +18,7 @@
 class shape {
 public:
     matrix inverseTransform = matrix(4,4,1);
-    material surfaceMaterial = material(color(1,1,1),
-                                        0.1, 0.9,0.9,200);
+    material surfaceMaterial = material();
 
     virtual vec normalAt(point worldPoint) {
         cout << "super called" << endl;

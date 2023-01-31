@@ -21,7 +21,7 @@ public:
     static vector<intersection> intersectWorld(world* w, ray r);
     static vector<intersection> hit(vector<intersection> intersections);
     static vec reflect(vec in, vec normal);
-    static color lighting(material material, pointLight light,
+    static color lighting(material material, shape* object, pointLight light,
                           point point, vec eyeVec, vec normalVec, bool inShadow);
 };
 

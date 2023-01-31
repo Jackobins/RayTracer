@@ -11,6 +11,7 @@
 #include "SceneFiles/WorldFiles/worldOps.h"
 #include "SceneFiles/WorldFiles/camera.h"
 #include "SceneFiles/Shapes/plane.h"
+#include "SceneFiles/patternFiles/stripes.h"
 
 using std::cerr;
 using std::endl;
@@ -50,6 +51,7 @@ int main() {
     middle->surfaceMaterial.surfaceColor = color(0.1,1,0.5);
     middle->surfaceMaterial.diffuse = 0.7;
     middle->surfaceMaterial.specular = 0.3;
+    middle->surfaceMaterial.pattern = new stripes(color(0,1,0), color(1,0,0));
 
     shape* right = new sphere();
     right->setTransform(matrixOps::multiply(matrixOps::translationMatrix(1.5,0.5,-0.5),

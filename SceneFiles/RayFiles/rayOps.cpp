@@ -5,6 +5,7 @@
 #include "rayOps.h"
 #include "../../CoordFiles/coordOps.h"
 #include "../../CanvasFiles/colorOps.h"
+#include "../patternFiles/patternOps.h"
 #include <cmath>
 #include <iostream>
 #include <algorithm>
@@ -49,9 +50,14 @@ vec rayOps::reflect(vec in, vec normal) {
     return coordOps::coordToVec(coordOps::subtract(in, newNormal));
 }
 
-color rayOps::lighting(material material, pointLight light,
+color rayOps::lighting(material material, shape* object, pointLight light,
                        point point, vec eyeVec, vec normalVec, bool inShadow) {
-    color effectiveColor = colorOps::multiply(material.surfaceColor, light.intensity);
+    color trueColor = material.surfaceColor;
+    if (material.pattern != nullptr) {
+        trueColor = patternOps::patternAtObject(object, material.pattern, point);
+    }
+
+    color effectiveColor = colorOps::multiply(trueColor, light.intensity);
     vec lightVec = vec(light.position.x - point.x,
                        light.position.y - point.y,
                        light.position.z - point.z).normalize();
