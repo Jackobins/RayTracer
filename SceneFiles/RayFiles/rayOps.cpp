@@ -29,7 +29,7 @@ vector<intersection> rayOps::hit(vector<intersection> intersections) {
     if (intersections.empty()) {
         return {};
     }
-    sphere* dummy = new sphere();
+    shape* dummy = new sphere();
     intersection min = intersection(INT_MAX, dummy);
     for (intersection i : intersections) {
         if (i.t >= 0 && i.t < min.t) {

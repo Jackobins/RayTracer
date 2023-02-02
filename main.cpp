@@ -36,12 +36,16 @@ int main() {
                                            matrixOps::rotationMatrix(0, M_PI_2));
     transform = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform);
     leftWall->setTransform(transform);
+    leftWall->surfaceMaterial.reflective = 0.05;
+    leftWall->surfaceMaterial.surfaceColor = color(0.1,0.1,0.1);
 
     shape* rightWall = new plane();
     matrix transform2 = matrixOps::multiply(matrixOps::rotationMatrix(1, M_PI_4),
                                             matrixOps::rotationMatrix(0, M_PI_2));
     transform2 = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform2);
     rightWall->setTransform(transform2);
+    rightWall->surfaceMaterial.reflective = 0.05;
+    rightWall->surfaceMaterial.surfaceColor = color(0.4,0.4,0.4);
 
     shape* middle = new sphere();
     middle->setTransform(matrixOps::translationMatrix(-0.5,1,0.5));
@@ -49,7 +53,7 @@ int main() {
     middle->surfaceMaterial.surfaceColor = color(0.1,1,0.5);
     middle->surfaceMaterial.diffuse = 0.7;
     middle->surfaceMaterial.specular = 0.3;
-    middle->surfaceMaterial.pattern = new stripes(color(0,1,0), color(1,0,0));
+    middle->surfaceMaterial.pattern = new stripes(color(0,0.2,0.8), color(1,0,0));
     middle->surfaceMaterial.pattern->setTransform(matrixOps::scalingMatrix(0.5,0.5,0.5));
     middle->surfaceMaterial.reflective = 0.8;
 
@@ -74,7 +78,7 @@ int main() {
     pointLight lightSource = pointLight(point(-10,10,-10),
                                         color(1,1,1));
     world* w = new world(lightSource, {floor, leftWall, rightWall, middle, left, right});
-    camera* cam = new camera(480, 360, M_PI/3);
+    camera* cam = new camera(1280, 720, M_PI/3);
     cam->setTransform(worldOps::viewTransform(point(0, 1.5, -5),
                                              point(0,1,0),
                                              vec(0,1,0)));

@@ -12,7 +12,7 @@ plane::plane(matrix transform, material material) {
 }
 
 vec plane::normalAt(point point) {
-    return vec(0,1,0);
+    return coordOps::coordToVec(matrixOps::multiply(inverseTransform, vec(0,1,0)));
 }
 
 vector<double> plane::intersect(ray r) {
