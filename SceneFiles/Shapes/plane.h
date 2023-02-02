@@ -12,7 +12,7 @@
 
 class plane : public shape {
 public:
-    constexpr static double EPSILON = 0.00001;
+    constexpr static double EPSILON = 0.0001;
 
     explicit plane();
     plane(matrix transform, material material);

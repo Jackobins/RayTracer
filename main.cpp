@@ -25,14 +25,23 @@ using std::ofstream;
 using namespace std;
 
 int main() {
-    pattern* checkersPattern = new checkers(color(1,1,1), color(0,0.6,0));
-    pattern* ringPattern = new ring(color(1,0.5,0), color(0,0,1));
+    pattern* checkerPattern = new checkers(color(1,1,1), color(0,0,0));
 
     shape* floor = new plane();
-    floor->surfaceMaterial = material();
-    floor->surfaceMaterial.surfaceColor = color(1,0.9,0.9);
-    floor->surfaceMaterial.specular = 0;
-    floor->surfaceMaterial.pattern = new blendedPattern(checkersPattern, ringPattern);
+    floor->surfaceMaterial.pattern = checkerPattern;
+    floor->surfaceMaterial.reflective = 0.3;
+
+    shape* leftWall = new plane();
+    matrix transform = matrixOps::multiply(matrixOps::rotationMatrix(1, -M_PI_4),
+                                           matrixOps::rotationMatrix(0, M_PI_2));
+    transform = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform);
+    leftWall->setTransform(transform);
+
+    shape* rightWall = new plane();
+    matrix transform2 = matrixOps::multiply(matrixOps::rotationMatrix(1, M_PI_4),
+                                            matrixOps::rotationMatrix(0, M_PI_2));
+    transform2 = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform2);
+    rightWall->setTransform(transform2);
 
     shape* middle = new sphere();
     middle->setTransform(matrixOps::translationMatrix(-0.5,1,0.5));
@@ -41,14 +50,17 @@ int main() {
     middle->surfaceMaterial.diffuse = 0.7;
     middle->surfaceMaterial.specular = 0.3;
     middle->surfaceMaterial.pattern = new stripes(color(0,1,0), color(1,0,0));
+    middle->surfaceMaterial.pattern->setTransform(matrixOps::scalingMatrix(0.5,0.5,0.5));
+    middle->surfaceMaterial.reflective = 0.8;
 
     shape* right = new sphere();
     right->setTransform(matrixOps::multiply(matrixOps::translationMatrix(1.5,0.5,-0.5),
                                         matrixOps::scalingMatrix(0.5,0.5,0.5)));
     right->surfaceMaterial = material();
-    right->surfaceMaterial.surfaceColor = color(0.5, 1, 0.1);
+    right->surfaceMaterial.surfaceColor = color(1, 0.5, 0.1);
     right->surfaceMaterial.diffuse = 0.7;
     right->surfaceMaterial.specular = 0.3;
+    right->surfaceMaterial.reflective = 0.2;
 
     shape* left = new sphere();
     left->setTransform(matrixOps::multiply(matrixOps::translationMatrix(-1.5,0.33,-0.75),
@@ -57,11 +69,11 @@ int main() {
     left->surfaceMaterial.surfaceColor = color(1, 0.8, 0.1);
     left->surfaceMaterial.diffuse = 0.7;
     left->surfaceMaterial.specular = 0.3;
-    left->surfaceMaterial.pattern = new gradient(color(0,1,0), color(0,0,1));
+    left->surfaceMaterial.reflective = 0.2;
 
     pointLight lightSource = pointLight(point(-10,10,-10),
                                         color(1,1,1));
-    world* w = new world(lightSource, {floor, middle, left, right});
+    world* w = new world(lightSource, {floor, leftWall, rightWall, middle, left, right});
     camera* cam = new camera(480, 360, M_PI/3);
     cam->setTransform(worldOps::viewTransform(point(0, 1.5, -5),
                                              point(0,1,0),

@@ -16,8 +16,8 @@ vec plane::normalAt(point point) {
 }
 
 vector<double> plane::intersect(ray r) {
-    if (abs(r.direction.y) < EPSILON) {
+    if ((double)abs((double)r.direction.y) < EPSILON) {
         return {};
     }
-    return {-r.origin.y / r.direction.y};
+    return {(double)-r.origin.y / (double)r.direction.y};
 }

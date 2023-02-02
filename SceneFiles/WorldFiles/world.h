@@ -19,6 +19,7 @@ public:
 
     world();
     world(pointLight pointLight, vector<shape*> listOfShapes);
+    void addShape(shape* s);
 };
 
 

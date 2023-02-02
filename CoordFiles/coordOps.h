@@ -5,6 +5,7 @@
 #ifndef RAYTRACER_COORDOPS_H
 #define RAYTRACER_COORDOPS_H
 
+#include <cmath>
 #include "coord.h"
 #include "vec.h"
 #include "point.h"
@@ -13,7 +14,7 @@ using namespace std;
 
 class coordOps {
 public:
-    constexpr static double EPSILON = 0.00001;
+    constexpr static double_t EPSILON = 0.0001;
     static bool areEqual(coord c1, coord c2);
     static coord add(coord c1, coord c2);
     static coord subtract (coord c1, coord c2);

@@ -4,16 +4,19 @@
 
 #include "worldOps.h"
 #include "../RayFiles/rayOps.h"
+#include "../../CanvasFiles/colorOps.h"
 
-color worldOps::shadeHit(world* world, computation comps) {
+color worldOps::shadeHit(world* world, computation comps, int remaining) {
     bool inShadow = isShadowed(world, comps.overPoint);
-    return rayOps::lighting(comps.object->surfaceMaterial,
-                            comps.object,
-                            world->light,
-                            comps.overPoint,
-                            comps.eyeVec,
-                            comps.normalVec,
-                            inShadow);
+    color surface = rayOps::lighting(comps.object->surfaceMaterial,
+                                     comps.object,
+                                     world->light,
+                                     comps.overPoint,
+                                     comps.eyeVec,
+                                     comps.normalVec,
+                                     inShadow);
+    color reflected = reflectedColor(world, comps, remaining);
+    return colorOps::add(surface, reflected);
 
     //// Note: can support multiple light sources by iterating over all light sources,
     ////       calling lighting() for each one, and adding the colors together.
@@ -38,16 +41,7 @@ canvas worldOps::render(camera* camera, world* world) {
     for (int i = 0; i < camera->vSize; i++) {
         for (int j = 0; j < camera->hSize; j++) {
             ray r = camera->rayForPixel(j, i);
-
-            color c = color(0,0,0);
-            vector<intersection> xs = rayOps::intersectWorld(world, r);
-            vector<intersection> hits = rayOps::hit(xs);
-
-            if (!hits.empty()) {
-                computation comps = computation(hits[0],r);
-                c = shadeHit(world, comps);
-            }
-
+            color c = colorAt(world, r, 4);
             image.writePixel(i, j, c);
         }
     }
@@ -69,8 +63,31 @@ bool worldOps::isShadowed(world* world, point point) {
     if (!hits.empty()) {
         if (hits[0].t < distance) {
             return true;
+        } else {
+            return false;
         }
     } else {
         return false;
     }
+}
+
+color worldOps::reflectedColor(world *world, computation comps, int remaining) {
+    if (comps.object->surfaceMaterial.reflective == 0 || remaining < 1) {
+        return color(0,0,0);
+    }
+
+    ray reflectRay = ray(comps.overPoint, comps.reflectVec);
+    color c = colorAt(world, reflectRay, remaining-1);
+    c = c.scalarMultiply(comps.object->surfaceMaterial.reflective);
+    return c;
+}
+
+color worldOps::colorAt(world *world, ray r, int remaining) {
+    vector<intersection> intersections = rayOps::intersectWorld(world, r);
+    vector<intersection> hit = rayOps::hit(intersections);
+    if (hit.empty()) {
+        return color(0,0,0);
+    }
+    computation comps = computation(hit[0], r);
+    return shadeHit(world, comps, remaining);
 }

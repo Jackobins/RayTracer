@@ -14,13 +14,14 @@
 
 class computation {
 public:
-    constexpr static double_t EPSILON = 0.00001;
+    constexpr static double_t EPSILON = 0.0001;
     double t;
     shape* object;
     point regularPoint;
     point overPoint;
     vec eyeVec;
     vec normalVec;
+    vec reflectVec;
     bool inside;
 
     computation(intersection intersection, ray ray);

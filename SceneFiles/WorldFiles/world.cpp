@@ -6,7 +6,7 @@
 #include "../Shapes/sphere.h"
 #include "../../CoordFiles/matrixOps.h"
 
-world::world() : light(pointLight(point(-10,-10,-10),
+world::world() : light(pointLight(point(-10,10,-10),
                                   color(1,1,1))) {
     shape* s1 = new sphere();
     s1->surfaceMaterial.surfaceColor = color(0.8, 1, 0.6);
@@ -20,4 +20,8 @@ world::world() : light(pointLight(point(-10,-10,-10),
 
 world::world(pointLight pointLight, vector<shape*> listOfShapes) : light(pointLight) {
     shapes = listOfShapes;
+}
+
+void world::addShape(shape *s) {
+    shapes.push_back(s);
 }

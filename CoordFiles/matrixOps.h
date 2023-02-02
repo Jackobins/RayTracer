@@ -11,7 +11,7 @@
 
 class matrixOps {
 public:
-    constexpr static double EPSILON = 0.00001;
+    constexpr static double_t EPSILON = 0.0001;
     static bool areEqual(matrix m1, matrix m2);
     static matrix multiply(matrix m1, matrix m2);
     static coord multiply(matrix m, coord c);
