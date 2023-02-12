@@ -19,7 +19,7 @@ color worldOps::shadeHit(world* world, computation comps, int remaining) {
     return colorOps::add(surface, reflected);
 
     //// Note: can support multiple light sources by iterating over all light sources,
-    ////       calling lighting() for each one, and adding the colors together.
+    ////       calling rayOps::lighting() for each one, and adding the colors together.
 }
 
 matrix worldOps::viewTransform(point from, point to, vec up) {
@@ -88,6 +88,13 @@ color worldOps::colorAt(world *world, ray r, int remaining) {
     if (hit.empty()) {
         return color(0,0,0);
     }
-    computation comps = computation(hit[0], r);
+    computation comps = computation(hit[0], r, intersections);
     return shadeHit(world, comps, remaining);
+}
+
+color worldOps::refractedColor(world *world, computation comps, int remaining) {
+    if (comps.object->surfaceMaterial.transparency == 0 || remaining == 0) {
+        return color(0,0,0);
+    }
+    return color(1,1,1);
 }

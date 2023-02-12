@@ -11,8 +11,13 @@ plane::plane(matrix transform, material material) {
     surfaceMaterial = material;
 }
 
-vec plane::normalAt(point point) {
-    return coordOps::coordToVec(matrixOps::multiply(inverseTransform, vec(0,1,0)));
+vec plane::normalAt(point localPoint) {
+    vec objectNormal = vec(0,1,0);
+    matrix transposeInverse = inverseTransform.transpose();
+    vec worldNormal = coordOps::coordToVec(
+            matrixOps::multiply(transposeInverse, objectNormal));
+    worldNormal.w = 0;
+    return worldNormal.normalize();
 }
 
 vector<double> plane::intersect(ray r) {

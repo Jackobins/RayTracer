@@ -18,10 +18,10 @@ public:
     double specular;
     double shininess;
     double reflective;
+    double transparency;
+    double refractiveIndex;
 
     material();
-    material(color surfaceColor, double ambient, double diffuse, double specular,
-             double shininess, class pattern* p, double reflective);
 };
 
 

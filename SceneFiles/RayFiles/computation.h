@@ -19,12 +19,15 @@ public:
     shape* object;
     point regularPoint;
     point overPoint;
+    point underPoint;
     vec eyeVec;
     vec normalVec;
     vec reflectVec;
     bool inside;
+    double n1;
+    double n2;
 
-    computation(intersection intersection, ray ray);
+    computation(intersection intersect, ray ray, vector<intersection> xs);
 };
 
 

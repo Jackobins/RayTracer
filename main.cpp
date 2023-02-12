@@ -25,75 +25,90 @@ using std::ofstream;
 using namespace std;
 
 int main() {
-    pattern* checkerPattern = new checkers(color(1,1,1), color(0,0,0));
+//    pattern* checkerPattern = new checkers(color(1,1,1), color(0,0,0));
+//
+//    shape* floor = new plane();
+//    floor->surfaceMaterial.pattern = checkerPattern;
+//    floor->surfaceMaterial.reflective = 0.3;
+//
+//    shape* leftWall = new plane();
+//    matrix transform = matrixOps::multiply(matrixOps::rotationMatrix(1, -M_PI_4),
+//                                           matrixOps::rotationMatrix(0, M_PI_2));
+//    transform = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform);
+//    leftWall->setTransform(transform);
+//    leftWall->surfaceMaterial.reflective = 0.05;
+//    leftWall->surfaceMaterial.surfaceColor = color(0.1,0.1,0.1);
+//
+//    shape* rightWall = new plane();
+//    matrix transform2 = matrixOps::multiply(matrixOps::rotationMatrix(1, M_PI_4),
+//                                            matrixOps::rotationMatrix(0, M_PI_2));
+//    transform2 = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform2);
+//    rightWall->setTransform(transform2);
+//    rightWall->surfaceMaterial.reflective = 0.05;
+//    rightWall->surfaceMaterial.surfaceColor = color(0.4,0.4,0.4);
+//
+//    shape* middle = new sphere();
+//    middle->setTransform(matrixOps::translationMatrix(-0.5,1,0.5));
+//    middle->surfaceMaterial = material();
+//    middle->surfaceMaterial.surfaceColor = color(0.1,1,0.5);
+//    middle->surfaceMaterial.diffuse = 0.7;
+//    middle->surfaceMaterial.specular = 0.3;
+//    middle->surfaceMaterial.pattern = new stripes(color(0,0.2,0.8), color(1,0,0));
+//    middle->surfaceMaterial.pattern->setTransform(matrixOps::scalingMatrix(0.5,0.5,0.5));
+//    middle->surfaceMaterial.reflective = 0.8;
+//
+//    shape* right = new sphere();
+//    right->setTransform(matrixOps::multiply(matrixOps::translationMatrix(1.5,0.5,-0.5),
+//                                        matrixOps::scalingMatrix(0.5,0.5,0.5)));
+//    right->surfaceMaterial = material();
+//    right->surfaceMaterial.surfaceColor = color(1, 0.5, 0.1);
+//    right->surfaceMaterial.diffuse = 0.7;
+//    right->surfaceMaterial.specular = 0.3;
+//    right->surfaceMaterial.reflective = 0.2;
+//
+//    shape* left = new sphere();
+//    left->setTransform(matrixOps::multiply(matrixOps::translationMatrix(-1.5,0.33,-0.75),
+//                                       matrixOps::scalingMatrix(0.33,0.33,0.33)));
+//    left->surfaceMaterial = material();
+//    left->surfaceMaterial.surfaceColor = color(1, 0.8, 0.1);
+//    left->surfaceMaterial.diffuse = 0.7;
+//    left->surfaceMaterial.specular = 0.3;
+//    left->surfaceMaterial.reflective = 0.2;
+//
+//    pointLight lightSource = pointLight(point(-10,10,-10),
+//                                        color(1,1,1));
+//    world* w = new world(lightSource, {floor, leftWall, rightWall, middle, left, right});
+//    camera* cam = new camera(1280, 720, M_PI/3);
+//    cam->setTransform(worldOps::viewTransform(point(0, 1.5, -5),
+//                                             point(0,1,0),
+//                                             vec(0,1,0)));
+//
+//    canvas c = worldOps::render(cam, w);
 
-    shape* floor = new plane();
-    floor->surfaceMaterial.pattern = checkerPattern;
-    floor->surfaceMaterial.reflective = 0.3;
+    world* w = new world();
+    shape* s = w->shapes[0];
+    s->surfaceMaterial.transparency = 1;
+    s->surfaceMaterial.refractiveIndex = 1.5;
+    ray r = ray(point(0,0,-5), vec(0,0,1));
+    vector<intersection> xs = {intersection(4,s), intersection(6,s)};
 
-    shape* leftWall = new plane();
-    matrix transform = matrixOps::multiply(matrixOps::rotationMatrix(1, -M_PI_4),
-                                           matrixOps::rotationMatrix(0, M_PI_2));
-    transform = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform);
-    leftWall->setTransform(transform);
-    leftWall->surfaceMaterial.reflective = 0.05;
-    leftWall->surfaceMaterial.surfaceColor = color(0.1,0.1,0.1);
+    computation comps = computation(xs[0], r, xs);
+    color c = worldOps::refractedColor(w, comps, 0);
+    cout << c.r << endl;
+    cout << c.g << endl;
+    cout << c.b << endl;
 
-    shape* rightWall = new plane();
-    matrix transform2 = matrixOps::multiply(matrixOps::rotationMatrix(1, M_PI_4),
-                                            matrixOps::rotationMatrix(0, M_PI_2));
-    transform2 = matrixOps::multiply(matrixOps::translationMatrix(0,0,5), transform2);
-    rightWall->setTransform(transform2);
-    rightWall->surfaceMaterial.reflective = 0.05;
-    rightWall->surfaceMaterial.surfaceColor = color(0.4,0.4,0.4);
 
-    shape* middle = new sphere();
-    middle->setTransform(matrixOps::translationMatrix(-0.5,1,0.5));
-    middle->surfaceMaterial = material();
-    middle->surfaceMaterial.surfaceColor = color(0.1,1,0.5);
-    middle->surfaceMaterial.diffuse = 0.7;
-    middle->surfaceMaterial.specular = 0.3;
-    middle->surfaceMaterial.pattern = new stripes(color(0,0.2,0.8), color(1,0,0));
-    middle->surfaceMaterial.pattern->setTransform(matrixOps::scalingMatrix(0.5,0.5,0.5));
-    middle->surfaceMaterial.reflective = 0.8;
-
-    shape* right = new sphere();
-    right->setTransform(matrixOps::multiply(matrixOps::translationMatrix(1.5,0.5,-0.5),
-                                        matrixOps::scalingMatrix(0.5,0.5,0.5)));
-    right->surfaceMaterial = material();
-    right->surfaceMaterial.surfaceColor = color(1, 0.5, 0.1);
-    right->surfaceMaterial.diffuse = 0.7;
-    right->surfaceMaterial.specular = 0.3;
-    right->surfaceMaterial.reflective = 0.2;
-
-    shape* left = new sphere();
-    left->setTransform(matrixOps::multiply(matrixOps::translationMatrix(-1.5,0.33,-0.75),
-                                       matrixOps::scalingMatrix(0.33,0.33,0.33)));
-    left->surfaceMaterial = material();
-    left->surfaceMaterial.surfaceColor = color(1, 0.8, 0.1);
-    left->surfaceMaterial.diffuse = 0.7;
-    left->surfaceMaterial.specular = 0.3;
-    left->surfaceMaterial.reflective = 0.2;
-
-    pointLight lightSource = pointLight(point(-10,10,-10),
-                                        color(1,1,1));
-    world* w = new world(lightSource, {floor, leftWall, rightWall, middle, left, right});
-    camera* cam = new camera(1280, 720, M_PI/3);
-    cam->setTransform(worldOps::viewTransform(point(0, 1.5, -5),
-                                             point(0,1,0),
-                                             vec(0,1,0)));
-
-    canvas c = worldOps::render(cam, w);
 
 ////     Write data to file
-    ofstream outdata;
-    outdata.open("output.txt");
-    if (!outdata) {
-        cerr << "Error: file could not be opened" << endl;
-        exit(1);
-    }
-    outdata << c.toPPM();
-    outdata.close();
+//    ofstream outdata;
+//    outdata.open("output.txt");
+//    if (!outdata) {
+//        cerr << "Error: file could not be opened" << endl;
+//        exit(1);
+//    }
+//    outdata << c.toPPM();
+//    outdata.close();
 
     return 0;
 }

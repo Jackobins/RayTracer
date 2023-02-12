@@ -11,18 +11,6 @@ material::material() : surfaceColor(color(1,1,1)) {
     shininess = 200;
     pattern = nullptr;
     reflective = 0.0;
-}
-
-material::material(color color, double amb, double dif, double spec, double shin, class pattern* p, double r)
-: surfaceColor(color) {
-    surfaceColor = color;
-    ambient = amb;
-    diffuse = dif;
-    specular = spec;
-    shininess = shin;
-    pattern = p;
-
-    reflective = r;
-    if (r > 1) reflective = 1.0;
-    if (r < 0) reflective = 0.0;
+    transparency = 0.0;
+    refractiveIndex = 1.0;
 }
