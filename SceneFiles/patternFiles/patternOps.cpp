@@ -9,3 +9,4 @@ color patternOps::patternAtObject(shape *object, pattern *pattern, point worldPo
     point patternPoint = coordOps::coordToPoint(matrixOps::multiply(pattern->inverseTransform, objectPoint));
     return pattern->patternAt(patternPoint);
 }
+

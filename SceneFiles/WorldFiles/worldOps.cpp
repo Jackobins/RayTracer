@@ -16,7 +16,9 @@ color worldOps::shadeHit(world* world, computation comps, int remaining) {
                                      comps.normalVec,
                                      inShadow);
     color reflected = reflectedColor(world, comps, remaining);
-    return colorOps::add(surface, reflected);
+    color refracted = refractedColor(world, comps, remaining);
+    color c = colorOps::add(surface, reflected);
+    return colorOps::add(c, refracted);
 
     //// Note: can support multiple light sources by iterating over all light sources,
     ////       calling rayOps::lighting() for each one, and adding the colors together.
@@ -96,5 +98,22 @@ color worldOps::refractedColor(world *world, computation comps, int remaining) {
     if (comps.object->surfaceMaterial.transparency == 0 || remaining == 0) {
         return color(0,0,0);
     }
-    return color(1,1,1);
+
+    double nRatio = (double) comps.n1 / (double) comps.n2;
+    double cosTheta1 = coordOps::dot(comps.eyeVec, comps.normalVec);
+    double sin2Theta2 = pow(nRatio, 2) * (1-pow(cosTheta1,2));
+    if (sin2Theta2 > 1) {
+        return color(0,0,0);
+    }
+
+    double cosTheta2 = sqrt(1.0 - sin2Theta2);
+    vec direction = coordOps::coordToVec(
+            coordOps::subtract(comps.normalVec.scalarMultiply(nRatio*cosTheta1 - cosTheta2),
+                               comps.eyeVec.scalarMultiply(nRatio))
+            );
+    ray refractRay = ray(comps.underPoint, direction);
+    color c = colorAt(world, refractRay, remaining - 1)
+            .scalarMultiply(comps.object->surfaceMaterial.transparency);
+
+    return c;
 }

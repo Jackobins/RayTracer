@@ -86,14 +86,23 @@ int main() {
 //    canvas c = worldOps::render(cam, w);
 
     world* w = new world();
-    shape* s = w->shapes[0];
-    s->surfaceMaterial.transparency = 1;
-    s->surfaceMaterial.refractiveIndex = 1.5;
-    ray r = ray(point(0,0,-5), vec(0,0,1));
-    vector<intersection> xs = {intersection(4,s), intersection(6,s)};
+    shape* floor = new plane();
+    floor->setTransform(matrixOps::translationMatrix(0,-1,0));
+    floor->surfaceMaterial.transparency = 0.5;
+    floor->surfaceMaterial.refractiveIndex = 1.5;
+    w->addShape(floor);
+    shape* ball = new sphere();
+    ball->surfaceMaterial.surfaceColor = color(1,0,0);
+    ball->surfaceMaterial.ambient = 0.5;
+    ball->setTransform(matrixOps::translationMatrix(0,-3.5,-0.5));
+    w->addShape(ball);
 
+    ray r = ray(point(0,0,-3),
+                vec(0, -sqrt(2)/2, sqrt(2)/2));
+    vector<intersection> xs = {intersection(sqrt(2), floor)};
     computation comps = computation(xs[0], r, xs);
-    color c = worldOps::refractedColor(w, comps, 0);
+
+    color c = worldOps::shadeHit(w, comps, 5);
     cout << c.r << endl;
     cout << c.g << endl;
     cout << c.b << endl;
