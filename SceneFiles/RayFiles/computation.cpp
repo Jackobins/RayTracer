@@ -57,3 +57,18 @@ reflectVec(vec(1,1,1)) {
         }
     }
 }
+
+double computation::schlick() {
+    double cos = coordOps::dot(eyeVec, normalVec);
+
+    if (n1 > n2) {
+        double n = (double) n1 / n2;
+        double sin2Theta2 = pow(n, 2) * (1-pow(cos, 2));
+        if (sin2Theta2 > 1) {
+            return 1;
+        }
+        cos = sqrt(1-sin2Theta2);
+    }
+    double r0 = pow(((double)(n1 - n2) / (n1 + n2)), 2);
+    return r0 + (1-r0) * pow((1-cos), 5);
+}

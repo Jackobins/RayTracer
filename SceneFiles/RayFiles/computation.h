@@ -28,6 +28,7 @@ public:
     double n2;
 
     computation(intersection intersect, ray ray, vector<intersection> xs);
+    double schlick();
 };
 
 

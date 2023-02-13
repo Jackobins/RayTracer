@@ -15,10 +15,18 @@ color worldOps::shadeHit(world* world, computation comps, int remaining) {
                                      comps.eyeVec,
                                      comps.normalVec,
                                      inShadow);
+
     color reflected = reflectedColor(world, comps, remaining);
     color refracted = refractedColor(world, comps, remaining);
-    color c = colorOps::add(surface, reflected);
-    return colorOps::add(c, refracted);
+    material mat = comps.object->surfaceMaterial;
+    if (mat.reflective > 0 && mat.transparency > 0) {
+        double reflectance = comps.schlick();
+        color output1 = colorOps::add(surface, reflected.scalarMultiply(reflectance));
+        return colorOps::add(output1, refracted.scalarMultiply(1-reflectance));
+    }
+
+    color output2 = colorOps::add(surface, reflected);
+    return colorOps::add(output2, refracted);
 
     //// Note: can support multiple light sources by iterating over all light sources,
     ////       calling rayOps::lighting() for each one, and adding the colors together.
